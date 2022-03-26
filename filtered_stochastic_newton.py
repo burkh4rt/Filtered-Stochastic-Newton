@@ -11,7 +11,14 @@ functions using sub-sampled gradients and Hessians
 Runs using the provided Dockerfile (https://www.docker.com):
 ```
 docker build --no-cache -t hibiscus .
-docker run --rm -ti -v $(pwd):/src hibiscus
+docker run --rm -ti -v $(pwd):/home/felixity hibiscus
+```
+or in a virtual environment with Python3.10:
+```
+python3.10 -m venv turquoise
+source turquoise/bin/activate
+pip3 install -r requirements.txt
+python3.10 filtered_stochastic_newton.py
 ```
 
 """
@@ -141,9 +148,9 @@ def ArmijoStyleSearch(
     """
     fn_x0 = fn(t0)
     for k in range(5):
-        step_length = 2 ** -k
+        step_length = 2**-k
         if fn(t0 + step_length * step_dir) - fn_x0 <= float(
-            0.99 * step_length * step_dir * grad_fn_t0.T
+            0.95 * step_length * step_dir * grad_fn_t0.T
         ):
             break
     return step_length
@@ -433,7 +440,7 @@ def run_example(
                 (
                     alpha
                     * solve(
-                        alpha ** 2 * hess_smooth + beta * np.eye(d_theta),
+                        alpha**2 * hess_smooth + beta * np.eye(d_theta),
                         hess_smooth,
                     )
                 )
@@ -505,7 +512,7 @@ def run_example(
 
         try:
             # add results for run to general results
-            results = results.append(run_results)
+            results = pd.concat([results, run_results])
         except NameError:
             # results not yet initialized
             results = run_results
@@ -527,6 +534,7 @@ def plot_sample_paths(
     """
 
     for fig_n, Tmax in enumerate(step_list):
+
         plt.figure(fig_n)
         fig, ax = plt.subplots()
 
@@ -698,13 +706,13 @@ def generate_aggregate_angular_results_2d(
 
     mse_f_step_angle = (
         results.set_index("step")
-        .step_angle_f_at_theta_f.apply(lambda x: x ** 2)
+        .step_angle_f_at_theta_f.apply(lambda x: x**2)
         .groupby("step")
         .mean()
     )
     mse_nf_step_angle = (
         results.set_index("step")
-        .step_angle_nf_at_theta_f.apply(lambda x: x ** 2)
+        .step_angle_nf_at_theta_f.apply(lambda x: x**2)
         .groupby("step")
         .mean()
     )
@@ -758,7 +766,8 @@ def generate_aggregate_Mt_results(
     ]
     avg_rho_Mt = [
         y.apply(lambda x: np.max(eig(np.array(x))[0]))
-        .agg(np.mean)
+        .to_numpy()
+        .mean()
         .round(3)
         .tolist()
         for _, y in grouped_Mt
@@ -773,7 +782,8 @@ def generate_aggregate_Mt_results(
     ]
     max_rho_Mt = [
         y.apply(lambda x: np.max(eig(np.array(x))[0]))
-        .agg(np.max)
+        .to_numpy()
+        .max()
         .round(3)
         .tolist()
         for _, y in grouped_Mt
@@ -814,8 +824,8 @@ def start_logger() -> logging.Logger:
     fh = logging.FileHandler(
         "filtered_stochastic_newton_" + now + ".log", mode="w"
     )
-    # fh.setLevel(logging.DEBUG)
-    fh.setLevel(logging.WARNING)
+    fh.setLevel(logging.DEBUG)
+    # fh.setLevel(logging.WARNING)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
 
@@ -852,12 +862,19 @@ def start_logger() -> logging.Logger:
 
 def set_display_options() -> None:
     """
-    Sets pandas display options
+    Sets pandas and matplotlib display options
     """
     pd.options.display.width = 250
     pd.options.display.max_columns = 10
     pd.options.display.max_columns = 30
     pd.options.display.max_colwidth = 100
+
+    plt.rcParams.update(
+        {
+            "font.family": "serif",
+            "font.serif": ["cmr10"],
+        }
+    )
 
 
 def main() -> None:

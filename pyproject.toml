@@ -5,6 +5,6 @@ exclude = '''
     \.git
   | \.idea
   # venv
-  | hibiscus
+  | turquoise
 )/
 '''
