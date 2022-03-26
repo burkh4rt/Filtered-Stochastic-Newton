@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/367056920.svg)](https://zenodo.org/badge/latestdoi/367056920)
+
 ### Discriminative Bayesian Filtering Lends Momentum to the Stochastic Newton Method for Minimizing Log-Convex Functions
 
 > To minimize the average of a set of log-convex functions, the stochastic
