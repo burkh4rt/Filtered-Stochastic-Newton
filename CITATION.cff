@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Burkhart"
+    given-names: "Michael C."
+    orcid: "https://orcid.org/0000-0002-2772-5840"
+  doi: "10.1007/s11590-022-01895-5"
+  journal: "Optimization Letters"
+  start: 657 # First page number
+  end: 673 # Last page number
+  title: "Discriminative Bayesian filtering lends momentum to the stochastic Newton method for minimizing log-convex functions"
+  issue: 3
+  volume: 17
+  year: 2023
+
+  Burkhart, M. C. (2023). Discriminative Bayesian filtering lends momentum to the stochastic Newton method for minimizing log-convex functions. Optimization Letters, 17(3), 657–673. https://doi.org/10.1007/s11590-022-01895-5
+
+  @article{Burkhart_Discriminative_Bayesian_filtering_2023,
+author = {Burkhart, Michael C.},
+doi = {10.1007/s11590-022-01895-5},
+journal = {Optimization Letters},
+number = {3},
+pages = {657--673},
+title = {{Discriminative Bayesian filtering lends momentum to the stochastic Newton method for minimizing log-convex functions}},
+volume = {17},
+year = {2023}
+}
