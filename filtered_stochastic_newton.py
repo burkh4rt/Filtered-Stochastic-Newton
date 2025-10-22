@@ -156,7 +156,7 @@ def ArmijoStyleSearch(
     return step_length
 
 
-def angular_distance(v1: np.array, v2: np.array) -> np.float:
+def angular_distance(v1: np.ndarray, v2: np.ndarray) -> np.float:
     """
     Returns the angle in radians between two equal-length vectors v1 and v2;
     if in 2 dimensions, returns a signed angle
